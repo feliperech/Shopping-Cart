@@ -1,5 +1,11 @@
-export const fetchProduct = () => {
-  // seu código aqui
+export const fetchProduct = async (productID) => { // recebe o ID como o parâmetro. Função assíncrona
+  if (productID === undefined || productID === null || productID === '') { // verifica se o id é valido
+    throw new Error('ID não informado'); // gera o erro, caso o ID não seja válido.
+  }
+  const URL_API = `https://api.mercadolibre.com/items/${productID}`; // cria o URL em const para consulta.
+  const response = await fetch(URL_API); // faz a requisição fetch da resposta
+  const data = await response.json(); // obtém os dados por uso do json() e os armazena na var. data.
+  return data; // retorna os dados obtidos.
 };
 
 export const fetchProductsList = async (element) => { // chama a função como assíncrona de param: element
