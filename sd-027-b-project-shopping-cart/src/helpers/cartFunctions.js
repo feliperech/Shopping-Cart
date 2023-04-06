@@ -1,32 +1,17 @@
-/**
- * Função que retorna todos os itens do carrinho salvos no localStorage.
- * @returns {Array} Itens de ids salvos do carrinho ou array vazio.
- */
-export const getSavedCartIDs = () => {
-  const cartProducts = localStorage.getItem('cartProducts');
-  return cartProducts ? JSON.parse(cartProducts) : [];
+import { fetchProduct } from './fetchFunctions'; // importa a função de fetchProduct
+import { createCartProductElement } from './shopFunctions'; // importa o elemento para criar o cart
+
+const takeCard = async () => { // cria a função que será utilizada para adicionar o produto
+  const cardElement = document.querySelector('.cart__products'); // recebe o elemento com a classe .cart_produts
+  const buttonAdd = document.querySelectorAll('.product__add'); // cria um vetor de elementos com a classe product__add
+  buttonAdd.forEach((element) => { // percorre os elementos para verificar se houve
+    element.addEventListener('click', async () => { // evento para verificar se houve click
+      const elementId = element.parentNode.firstChild.innerHTML; // extrai o ID para a fetchProduct
+      const elementSelected = await fetchProduct(elementId); // realiza a requisição da função fetchProduct com o id passado
+      const card = cardElement.appendChild(createCartProductElement(elementSelected)); // cria o card como filho do cardElement
+      return card; // retorna card
+    });
+  });
 };
 
-/**
- * Função que adiciona um product ao carrinho.
- * @param {string} id - ID do product a ser adicionado.
- */
-export const saveCartID = (id) => {
-  if (!id) throw new Error('Você deve fornecer um ID');
-
-  const cartProducts = getSavedCartIDs();
-  const newCartProducts = [...cartProducts, id];
-  localStorage.setItem('cartProducts', JSON.stringify(newCartProducts));
-};
-
-/**
- * Função que remove um product do carrinho.
- * @param {string} id - ID do product a ser removido.
- */
-export const removeCartID = (id) => {
-  if (!id) throw new Error('Você deve fornecer um ID');
-
-  const cartProducts = getSavedCartIDs();
-  const newCartProducts = cartProducts.filter((product) => product !== id);
-  localStorage.setItem('cartProducts', JSON.stringify(newCartProducts));
-};
+export default takeCard; // exporta a função
