@@ -1,4 +1,4 @@
-import { getSavedCartIDs } from './cartFunctions';
+import { getSavedCartIDs } from './cardFunctions';
 import { createCartProductElement } from './shopFunctions';
 import { fetchProduct } from './fetchFunctions';
 
